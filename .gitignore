@@ -1,5 +1,14 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
+.vscode/
+android
+ios
+.env
+babel.config.js
+metro.config.js
+package-lock.json
+
+
 # dependencies
 node_modules/
 
