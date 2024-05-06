@@ -15,6 +15,7 @@ import Loader from "../../../components/Loader/Loader";
 import DeepNavLink from "../../../components/header/DeepNavLinks/DeepNavLinks";
 import CustomTextInput from "../../../components/Forms/CTextInput";
 import SelectInput from "../../../components/Forms/SelectInput";
+import RCSelectInput from "../../../components/RequestSelectInput";
 import CheckBoxInput from "../../../components/Forms/CheckboxInput";
 
 import { useAtom } from "jotai";
@@ -61,6 +62,7 @@ export default function ModifyUser({ navigation, route }) {
         role: res.role,
         active: res.active,
         guest: res.guest,
+        diet: res.diet,
       });
       setLoading(false);
     }
@@ -85,23 +87,37 @@ export default function ModifyUser({ navigation, route }) {
   }, [email]);
 
   const onSubmit = async (data) => {
-    console.log(data);
+    data = submitDataCleanup(data);
+    console.log("submit data: ", data);
     setLoading(true);
     if (route.params?.user_id || route.params?.token) {
-      await cFetch.patch(
-        `${process.env.EXPO_PUBLIC_BACKEND_API}/api/users/single`,
-        data,
-        {
-          user_id: route.params.user_id,
-          token: route.params.token,
-        }
-      );
+      try {
+        await cFetch.patch(
+          `${process.env.EXPO_PUBLIC_BACKEND_API}/api/users/single`,
+          data,
+          {
+            user_id: route.params.user_id,
+            token: route.params.token,
+          }
+        );
+      } catch {
+        Toast.error("Error updating user");
+        setLoading(false);
+        return;
+      }
     } else {
-      await cFetch.post(
-        `${process.env.EXPO_PUBLIC_BACKEND_API}/api/users/single`,
-        data
-      );
+      try {
+        await cFetch.post(
+          `${process.env.EXPO_PUBLIC_BACKEND_API}/api/users/single`,
+          data
+        );
+      } catch {
+        Toast.error("Error adding user");
+        setLoading(false);
+        return;
+      }
     }
+
     setLoading(false);
     Toast.success(
       route.params?.user_id || route.params?.token
@@ -233,12 +249,20 @@ export default function ModifyUser({ navigation, route }) {
                   name={"role"}
                   label={"Role"}
                   errors={errors}
-                  placeholder={"Room"}
                   options={[
                     { label: "Student", value: "student" },
                     { label: "Admin", value: "admin" },
                     { label: "Numerary", value: "numerary" },
                   ]}
+                />
+
+                <RCSelectInput
+                  control={control}
+                  name={"diet"}
+                  label={"Diet"}
+                  errors={errors}
+                  defaultValue={"None"}
+                  requestURL={`${process.env.EXPO_PUBLIC_BACKEND_API}/api/diets`}
                 />
 
                 <CheckBoxInput
@@ -283,6 +307,13 @@ export default function ModifyUser({ navigation, route }) {
     </View>
   );
 }
+
+const submitDataCleanup = (data) => {
+  if (data.diet == "None") {
+    data.diet = undefined;
+  }
+  return data;
+};
 
 const styles = StyleSheet.create({
   header: {

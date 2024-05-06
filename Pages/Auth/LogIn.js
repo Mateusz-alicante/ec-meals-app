@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, Button } from "react-native";
+import { View, Text, TextInput, StyleSheet, Button, Alert } from "react-native";
 import { set, useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 
@@ -27,11 +27,18 @@ export default function Login({ navigation }) {
   const onSubmit = async (data) => {
     const res = await cFetch
       .post(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/auth`, data)
-      .catch((err) =>
-        console.log("Error while fetching data from server: ", err)
-      );
+      .catch((err) => {
+        console.error("Error on login: ", err);
+        return;
+      });
 
     console.log("login in: ", res);
+
+    if (res.code === "noUser")
+      return Alert.alert(
+        "User not found",
+        "Please check your credentials and contact the administrator"
+      );
 
     setAuth(res);
 

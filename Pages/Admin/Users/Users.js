@@ -1,5 +1,12 @@
 import Container from "../../../components/Container/Container";
-import { View, Text, ScrollView, Button, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Button,
+  StyleSheet,
+  TextInput,
+} from "react-native";
 import DeepNavLink from "../../../components/header/DeepNavLinks/DeepNavLinks";
 
 import { useFetch } from "../../../_helpers/useFetch";
@@ -12,6 +19,7 @@ export default function Users({ navigation, route }) {
   const cFetch = useFetch();
 
   const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const isFocused = useIsFocused();
 
@@ -47,22 +55,45 @@ export default function Users({ navigation, route }) {
         <Text>Users:</Text>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <Loader loading={loading}>
-            {users.map((user) => (
-              <View key={user.id} style={styles.singleUserContainer}>
-                <Text>
-                  {user.firstName} {user.lastName}
-                </Text>
-                <Button
-                  title="Edit"
-                  onPress={() =>
-                    navigation.navigate("Modify User", {
-                      user_id: user.id,
-                      returnPaths: ["Dashboard", "Users List"],
-                    })
-                  }
-                />
-              </View>
-            ))}
+            <>
+              <Text>Search by first name:</Text>
+              <TextInput
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                style={styles.searchField}
+              />
+              {users
+                .filter((user) =>
+                  user.firstName
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase())
+                )
+                .map((user) => (
+                  <View key={user.id} style={styles.singleUserContainer}>
+                    <Text>
+                      {user.firstName} {user.lastName}
+                    </Text>
+                    <View style={styles.rightButtonContainer}>
+                      <Button
+                        title="Meals"
+                        onPress={() =>
+                          console.log("Meals", user.firstName, user.lastName)
+                        }
+                      />
+                      <View style={{ width: 10 }} />
+                      <Button
+                        title="Edit"
+                        onPress={() =>
+                          navigation.navigate("Modify User", {
+                            user_id: user.id,
+                            returnPaths: ["Dashboard", "Users List"],
+                          })
+                        }
+                      />
+                    </View>
+                  </View>
+                ))}
+            </>
           </Loader>
         </ScrollView>
       </Container>
@@ -78,5 +109,13 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
     margin: 10,
+  },
+  searchField: {
+    width: "100%",
+    padding: 10,
+    backgroundColor: "whitesmoke",
+  },
+  rightButtonContainer: {
+    flexDirection: "row",
   },
 });

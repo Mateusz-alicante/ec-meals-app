@@ -2,21 +2,42 @@ import { Controller } from "react-hook-form";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
+import { useFetch } from "../_helpers/useFetch";
+import { useEffect, useState } from "react";
 
 export default function CTextInput({
   control,
   name,
-  options,
+  requestURL,
   label,
   errors,
   defaultValue,
 }) {
+  const cFetch = useFetch();
+
+  const [options, setOptions] = useState([defaultValue]);
+
+  useEffect(() => {
+    console.log("useEffect called");
+    getOptions();
+  }, []);
+
+  const getOptions = async () => {
+    const res = await cFetch.get(requestURL);
+    if (res.message == "OK") {
+      dietItems = res.data.map((item) => {
+        return item.name;
+      });
+      setOptions([defaultValue, ...dietItems]);
+    }
+  };
+
   return (
     <View>
       <Text style={styles.label}>{label}</Text>
       <Controller
         control={control}
-        defaultValue={defaultValue || options[0].value}
+        defaultValue={defaultValue}
         render={({ field: { onChange, value } }) => (
           <>
             <Picker
@@ -24,11 +45,7 @@ export default function CTextInput({
               onValueChange={(itemValue, itemIndex) => onChange(itemValue)}
             >
               {options.map((option) => (
-                <Picker.Item
-                  key={option.value}
-                  label={option.label}
-                  value={option.value}
-                />
+                <Picker.Item key={option} label={option} value={option} />
               ))}
             </Picker>
           </>

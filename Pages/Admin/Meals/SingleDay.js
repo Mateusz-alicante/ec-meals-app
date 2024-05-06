@@ -7,16 +7,26 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-const screeenWidth = Dimensions.get("window").width;
-const screenHeight = Dimensions.get("window").height;
+import OverviewCategoryDisplay from "./Components/Overview/OverviewCategoryDisplay";
+import SingleMealList from "./Components/Meals/SingleMealList";
+import MealStatusIndicator from "./Components/Status/MealsStatus";
+import GenerateReportControls from "./Components/Status/generateReportControls";
 
-export default function SingleDay({ mealData }) {
-  if (!mealData) return null;
+export default function SingleDay({ mealData: data }) {
+  if (!data) return null;
+
+  const mealData = data.meals;
+  const status = data.status;
+
   if (mealData.error) {
     return <Text>{mealData.error}</Text>;
   } else
     return (
       <>
+        <View>
+          <MealStatusIndicator mealStatus={status} />
+          <GenerateReportControls mealData={mealData} />
+        </View>
         <DayOverview mealData={mealData} />
 
         <Meals
@@ -35,7 +45,9 @@ export default function SingleDay({ mealData }) {
 }
 
 const Meals = ({ mealData, mealTypeList, header }) => {
+  if (!mealData || !mealTypeList) return null;
   const [open, setOpen] = useState(true);
+
   return (
     <>
       <TouchableOpacity onPress={() => setOpen(!open)}>
@@ -43,20 +55,17 @@ const Meals = ({ mealData, mealTypeList, header }) => {
       </TouchableOpacity>
       {mealData &&
         open &&
-        mealTypeList.map((meal, index) => (
-          <Fragment key={index}>
-            <Text style={styles.mealTypeHeader}>{meal}</Text>
-            {mealData[index].map(({ name, id }) => {
-              return <Text key={id}>{name}</Text>;
-            })}
-          </Fragment>
-        ))}
+        mealTypeList.map((meal, index) =>
+          SingleMealList({ mealData: mealData[index], mealName: meal })
+        )}
     </>
   );
 };
 
 const DayOverview = ({ mealData }) => {
-  const [open, setOpen] = useState(true);
+  if (!mealData) return null;
+  const [open, setOpen] = useState(false);
+  console.log(mealData);
   if (mealData)
     return (
       <Fragment>
@@ -65,37 +74,26 @@ const DayOverview = ({ mealData }) => {
         </TouchableOpacity>
         {open && (
           <View style={styles.overviewOuterContainer}>
-            <View>
-              {MEALS.map((meal, index) => (
-                <View key={index} style={styles.singleOverviewContainer}>
-                  <Text style={styles.mealTypeHeader}>{meal}: </Text>
-                  <Text>{getNSignedUp(mealData.meals[index])}</Text>
-                </View>
-              ))}
-            </View>
-
-            <View>
-              {PACKEDMEALS.map((meal, index) => (
-                <View key={index} style={styles.singleOverviewContainer}>
-                  <Text style={styles.mealTypeHeader}>{meal}: </Text>
-                  <Text>{getNSignedUp(mealData.packedMeals[index])}</Text>
-                </View>
-              ))}
+            <View style={styles.innerOverviewContainer}>
+              {mealData.meals &&
+                MEALS.map((meal, index) =>
+                  OverviewCategoryDisplay({
+                    mealCategory: meal,
+                    mealData: mealData.meals[index],
+                  })
+                )}
+              {mealData.packedMeals &&
+                PACKEDMEALS.map((meal, index) =>
+                  OverviewCategoryDisplay({
+                    mealCategory: meal,
+                    mealData: mealData.packedMeals[index],
+                  })
+                )}
             </View>
           </View>
         )}
       </Fragment>
     );
-};
-
-const getNSignedUp = (day) => {
-  return day.reduce((acc, meal) => {
-    if (meal) {
-      return acc + 1;
-    } else {
-      return acc;
-    }
-  }, 0);
 };
 
 const styles = StyleSheet.create({
@@ -108,22 +106,12 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
   },
-  mealTypeHeader: {
-    fontSize: 20,
-    fontWeight: "400",
-    textDecorationLine: "underline",
-  },
-  singleOverviewContainer: {
+  overviewOuterContainer: {},
+  innerOverviewContainer: {
+    flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-  },
-  overviewOuterContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
+    flexWrap: "wrap",
+    alignItems: "stretch",
   },
 });
 

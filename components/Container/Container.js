@@ -11,7 +11,7 @@ export default function Container({
 }) {
   const styles = StyleSheet.create({
     container: {
-      maxHeight: "90%",
+      maxHeight: "88%",
 
       width: wide ? "100%" : screeenWidth > 500 ? "50%" : "95%",
       margin: "auto",
@@ -29,6 +29,7 @@ export default function Container({
       shadowOpacity: 0.8,
       shadowRadius: 2,
       elevation: 5,
+      ...style,
     },
   });
 

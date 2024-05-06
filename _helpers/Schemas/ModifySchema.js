@@ -12,4 +12,5 @@ export default Joi.object({
   active: Joi.boolean(),
   guest: Joi.boolean(),
   room: Joi.number().empty(""),
+  diet: Joi.any(),
 });

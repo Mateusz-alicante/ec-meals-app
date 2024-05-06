@@ -32,6 +32,7 @@ export default function Dashbaord({ navigation }) {
 const screens = [
   { name: "Users", icon: "people-outline", path: "Users" },
   { name: "Meals", icon: "pizza-outline", path: "Meals" },
+  { name: "Diets", icon: "leaf-outline", path: "Diets" },
 ];
 
 const styles = StyleSheet.create({
