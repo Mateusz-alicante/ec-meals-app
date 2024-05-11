@@ -3,12 +3,12 @@
     "name": "ec",
     "slug": "ec",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
     "experiments": {
       "baseUrl": "/ec-meals-app"
     },
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -40,9 +40,7 @@
       "package": "com.anonymous.ec"
     },
     "web": {
-      "favicon": "./assets/favicon.png",
-      "bundler": "metro",
-      "output": "server"
+      "bundler": "metro"
     },
     "plugins": [
       "expo-router",
