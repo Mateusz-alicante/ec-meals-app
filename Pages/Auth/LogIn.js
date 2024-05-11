@@ -6,7 +6,7 @@ import Container from "../../components/Container/Container";
 import LoginSchema from "../../_helpers/Schemas/LoginSchema";
 
 import CustomTextInput from "../../components/Forms/CTextInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useFetch } from "../../_helpers/useFetch";
 
@@ -26,6 +26,11 @@ export default function Login({ navigation }) {
   const cFetch = useFetch();
   const [auth, setAuth] = useAtom(authAtom);
   const [loading, setLoading] = useState(false);
+
+  useEffect(
+    () => console.log("backend api at: ", process.env.EXPO_PUBLIC_BACKEND_API),
+    []
+  );
 
   const onSubmit = async (data) => {
     setLoading(true);
