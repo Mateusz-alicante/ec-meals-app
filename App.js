@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, KeyboardAvoidingView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import "text-encoding-polyfill";
@@ -28,33 +28,39 @@ export default function App() {
   const [auth, setAuth] = useAtom(authAtom);
 
   return (
-    <View style={styles.container}>
-      <ToastManager />
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            cardStyle: { flex: 1 },
-            tabBarIcon: ({ focused, color, size }) => {
-              return (
-                <Icons name={iconTitle(route.name)} size={size} color={color} />
-              );
-            },
-          })}
-        >
-          {navTabs(auth?.role).map((tab) => (
-            <Tab.Screen
-              name={tab.name}
-              key={tab.name}
-              component={tab.component}
-              options={({ route, navigation }) => ({
-                headerRight: () => <HeaderLogo />,
-                headerTitleAlign: "left",
-              })}
-            />
-          ))}
-        </Tab.Navigator>
-      </NavigationContainer>
-    </View>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+      <View style={styles.container}>
+        <ToastManager />
+        <NavigationContainer>
+          <Tab.Navigator
+            screenOptions={({ route }) => ({
+              cardStyle: { flex: 1 },
+              tabBarIcon: ({ focused, color, size }) => {
+                return (
+                  <Icons
+                    name={iconTitle(route.name)}
+                    size={size}
+                    color={color}
+                  />
+                );
+              },
+            })}
+          >
+            {navTabs(auth?.role).map((tab) => (
+              <Tab.Screen
+                name={tab.name}
+                key={tab.name}
+                component={tab.component}
+                options={({ route, navigation }) => ({
+                  headerRight: () => <HeaderLogo />,
+                  headerTitleAlign: "left",
+                })}
+              />
+            ))}
+          </Tab.Navigator>
+        </NavigationContainer>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 

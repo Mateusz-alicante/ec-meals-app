@@ -6,11 +6,13 @@ import Container from "../../components/Container/Container";
 import LoginSchema from "../../_helpers/Schemas/LoginSchema";
 
 import CustomTextInput from "../../components/Forms/CTextInput";
+import { useState } from "react";
 
 import { useFetch } from "../../_helpers/useFetch";
 
 import { useAtom } from "jotai";
 import { authAtom } from "../../_helpers/Atoms";
+import useAlert from "../../_helpers/useAlert";
 
 export default function Login({ navigation }) {
   const {
@@ -23,21 +25,30 @@ export default function Login({ navigation }) {
 
   const cFetch = useFetch();
   const [auth, setAuth] = useAtom(authAtom);
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const res = await cFetch
       .post(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/auth`, data)
       .catch((err) => {
         console.error("Error on login: ", err);
-        return;
+        useAlert("Error", "An error occured while trying to log in");
+        return setLoading(false);
       });
 
     console.log("login in: ", res);
+    setLoading(false);
 
     if (res.code === "noUser")
-      return Alert.alert(
+      return useAlert(
         "User not found",
         "Please check your credentials and contact the administrator"
+      );
+    else if (res.code === "badPass")
+      return useAlert(
+        "Incorrect password",
+        "If you forgot the password, contact the administrator"
       );
 
     setAuth(res);
@@ -65,6 +76,7 @@ export default function Login({ navigation }) {
 
       <View style={styles.buttonContainer}>
         <Button
+          disabled={loading}
           onPress={handleSubmit(onSubmit)}
           style={styles.button}
           title="Log in"

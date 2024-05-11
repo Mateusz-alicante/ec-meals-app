@@ -10,8 +10,6 @@ import {
 
 import Icons from "@expo/vector-icons/Ionicons";
 
-import generateDoc from "./generateDoc";
-
 export default function MealStatusIndicator({ mealStatus }) {
   return (
     <View style={styles.statusIndicator}>

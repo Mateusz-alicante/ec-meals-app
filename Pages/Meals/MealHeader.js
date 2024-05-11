@@ -9,7 +9,7 @@ const iconSize = screeenWidth > 500 ? 30 : 20;
 
 const fontSize = screeenWidth > 500 ? 30 : 20;
 
-export default function MealHeader({ updateState, nextUpdateTime }) {
+export default function MealHeader({ updateState, nextUpdateTime, name }) {
   return (
     <View style={styles.HeaderContainer}>
       <View style={styles.singleContainer}>
@@ -21,6 +21,9 @@ export default function MealHeader({ updateState, nextUpdateTime }) {
         <Text style={updateState ? styles.updateSaved : styles.updateNotSaved}>
           {updateState ? "Up to date" : "Not saved"}
         </Text>
+      </View>
+      <View>
+        <Text style={{ fontSize: fontSize }}>{name}</Text>
       </View>
       <View style={styles.singleContainer}>
         {nextUpdateTime && (

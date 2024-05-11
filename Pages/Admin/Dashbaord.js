@@ -31,7 +31,7 @@ export default function Dashbaord({ navigation }) {
 
 const screens = [
   { name: "Users", icon: "people-outline", path: "Users" },
-  { name: "Meals", icon: "pizza-outline", path: "Meals" },
+  { name: "Meals", icon: "pizza-outline", path: "AllMeals" },
   { name: "Diets", icon: "leaf-outline", path: "Diets" },
 ];
 

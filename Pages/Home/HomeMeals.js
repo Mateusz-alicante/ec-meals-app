@@ -6,14 +6,20 @@ import { useFetch } from "../../_helpers/useFetch";
 const screeenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
+import { useFocusEffect } from "@react-navigation/native";
+
+import React from "react";
+
 export default function HomeMeals({ navigation, route }) {
   const cFetch = useFetch();
   const [loading, setLoading] = useState(false);
   const [mealData, setMealData] = useState(null);
 
-  useEffect(() => {
-    fetchMeals();
-  }, [route]);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchMeals();
+    }, [])
+  );
 
   const fetchMeals = async () => {
     setLoading(true);
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
     color: "white",
     padding: screeenWidth > 500 ? 10 : 3,
     margin: screeenWidth > 500 ? 0 : 5,
-    borderRadius: "10px",
+    borderRadius: 10,
   },
   singleMeal: {
     width: "100%",

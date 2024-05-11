@@ -6,10 +6,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function OverviewCategoryDisplay({ mealCategory, mealData }) {
-  console.log(mealData);
+export default function OverviewCategoryDisplay({
+  mealCategory,
+  mealData,
+  index,
+}) {
   return (
-    <View key={`${mealCategory}`} style={styles.singleOverviewContainer}>
+    <View key={`${index}`} style={styles.singleOverviewContainer}>
       <View style={styles.GlobalOverviewContainer}>
         <Text style={styles.mealTypeHeader}>{mealCategory}: </Text>
         <Text>{getNSignedUp(mealData)}</Text>

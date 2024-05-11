@@ -10,9 +10,10 @@ import {
 import OverviewCategoryDisplay from "./Components/Overview/OverviewCategoryDisplay";
 import SingleMealList from "./Components/Meals/SingleMealList";
 import MealStatusIndicator from "./Components/Status/MealsStatus";
-import GenerateReportControls from "./Components/Status/generateReportControls";
+import UnmarkedList from "./Components/Meals/UnmarkedList";
+import AddUsers from "./Components/Functional/AddUsers";
 
-export default function SingleDay({ mealData: data }) {
+export default function SingleDay({ mealData: data, date, fetch }) {
   if (!data) return null;
 
   const mealData = data.meals;
@@ -25,7 +26,6 @@ export default function SingleDay({ mealData: data }) {
       <>
         <View>
           <MealStatusIndicator mealStatus={status} />
-          <GenerateReportControls mealData={mealData} />
         </View>
         <DayOverview mealData={mealData} />
 
@@ -40,6 +40,10 @@ export default function SingleDay({ mealData: data }) {
           mealTypeList={PACKEDMEALS}
           header={"Packed Meals"}
         />
+
+        {status == "final" && <UnmarkedList mealData={mealData.unmarked} />}
+
+        <AddUsers date={date} fetch={fetch} />
       </>
     );
 }
@@ -56,7 +60,7 @@ const Meals = ({ mealData, mealTypeList, header }) => {
       {mealData &&
         open &&
         mealTypeList.map((meal, index) =>
-          SingleMealList({ mealData: mealData[index], mealName: meal })
+          SingleMealList({ mealData: mealData[index], mealName: meal, index })
         )}
     </>
   );
@@ -80,6 +84,7 @@ const DayOverview = ({ mealData }) => {
                   OverviewCategoryDisplay({
                     mealCategory: meal,
                     mealData: mealData.meals[index],
+                    index,
                   })
                 )}
               {mealData.packedMeals &&
@@ -87,6 +92,7 @@ const DayOverview = ({ mealData }) => {
                   OverviewCategoryDisplay({
                     mealCategory: meal,
                     mealData: mealData.packedMeals[index],
+                    index: index + 3,
                   })
                 )}
             </View>

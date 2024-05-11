@@ -77,7 +77,10 @@ export default function Users({ navigation, route }) {
                       <Button
                         title="Meals"
                         onPress={() =>
-                          console.log("Meals", user.firstName, user.lastName)
+                          navigation.navigate("IdMeals", {
+                            user_id: user.id,
+                            returnPaths: ["Dashboard", "Users List"],
+                          })
                         }
                       />
                       <View style={{ width: 10 }} />

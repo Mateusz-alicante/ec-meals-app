@@ -113,10 +113,11 @@ const DayCheckbox = ({
   );
 };
 
-export default function Week({}) {
+export default function Week({ user_id }) {
   const [mealData, setMealData] = useState(
     DaysOfTheWeek.slice(1).map((day) => MealTypes.map((meal) => false))
   );
+  const [firstName, setFirstName] = useState("");
   const [disabledDay, setDisabledDay] = useState(undefined);
 
   const [loading, setLoading] = useState(true);
@@ -130,7 +131,9 @@ export default function Week({}) {
   const fetchMeals = async () => {
     setLoading(true);
     const res = await cFetch
-      .get(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/meals`)
+      .get(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/meals`, null, {
+        forUser: user_id,
+      })
       .catch((err) =>
         console.log("Error while fetching data from server: ", err)
       );
@@ -139,7 +142,8 @@ export default function Week({}) {
     setTimer(res.updateTime);
     setUpdateState(true);
     setLoading(false);
-    setDisabledDay(res.disabledDay);
+    setDisabledDay(user_id ? undefined : res.disabledDay);
+    setFirstName(res.firstName);
   };
 
   const TableData = MealTypes.map((day, indexType) =>
@@ -160,9 +164,11 @@ export default function Week({}) {
   const SaveData = async () => {
     setLoading(true);
     const res = await cFetch
-      .post(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/meals`, {
-        meals: mealData,
-      })
+      .post(
+        `${process.env.EXPO_PUBLIC_BACKEND_API}/api/meals`,
+        { meals: mealData },
+        { forUser: user_id }
+      )
       .catch((err) =>
         console.log("Error while fetching data from server: ", err)
       );
@@ -182,7 +188,11 @@ export default function Week({}) {
         warning={warning}
         warningMessage={timerText}
       >
-        <MealHeader updateState={updateState} nextUpdateTime={timerText} />
+        <MealHeader
+          updateState={updateState}
+          nextUpdateTime={timerText}
+          name={firstName}
+        />
         <View style={styles.container}>
           <Table borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}>
             <Row

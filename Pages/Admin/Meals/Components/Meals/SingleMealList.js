@@ -6,9 +6,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function SingleMealList({ mealName, mealData }) {
+export default function SingleMealList({ mealName, mealData, index }) {
   return (
-    <View key={mealName} style={styles.mealInfoContainer}>
+    <View key={index} style={styles.mealInfoContainer}>
       <Text style={styles.mealTypeHeader}>{mealName}</Text>
       <View style={styles.personListContainer}>
         {mealData.map(({ name, id, diet }) => {

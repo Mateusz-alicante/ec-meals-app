@@ -1,17 +1,23 @@
 import { StyleSheet, View, Dimensions, Text } from "react-native";
 import Container from "../../components/Container/Container";
-
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-const Tab = createMaterialTopTabNavigator();
-
+import DeepNavLink from "../../components/header/DeepNavLinks/DeepNavLinks";
 import Week from "./Week";
 
-export default function Meals({ children, style }) {
+export default function Meals({ children, style, route, navigation }) {
+  user_id = route.params?.user_id;
+  returnPaths = route.params?.returnPaths;
   return (
-    <Container wide={true} maxHeight={false}>
-      <Week />
-    </Container>
+    <>
+      {returnPaths && (
+        <DeepNavLink
+          route={route}
+          navigation={navigation}
+          routes={returnPaths}
+        />
+      )}
+      <Container wide={true} maxHeight={false}>
+        <Week user_id={user_id} />
+      </Container>
+    </>
   );
 }

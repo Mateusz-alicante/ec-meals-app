@@ -68,7 +68,7 @@ export default function Meals({ navigation, route }) {
               />
             </View>
             <Loader loading={loading}>
-              <SingleDay mealData={mealData} />
+              <SingleDay mealData={mealData} date={date} fetch={fetchMeals} />
             </Loader>
           </View>
         </ScrollView>
@@ -85,9 +85,7 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 20,
   },
-  outerContianer: {
-    backgroundColor: "whitesmoke",
-  },
+  outerContianer: {},
   dayText: {
     fontSize: 20,
     fontWeight: "bold",

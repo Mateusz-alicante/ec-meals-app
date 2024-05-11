@@ -11,7 +11,7 @@ export default function Container({
 }) {
   const styles = StyleSheet.create({
     container: {
-      maxHeight: "88%",
+      maxHeight: "93%",
 
       width: wide ? "100%" : screeenWidth > 500 ? "50%" : "95%",
       margin: "auto",
