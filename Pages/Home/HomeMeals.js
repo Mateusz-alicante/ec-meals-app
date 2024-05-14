@@ -13,7 +13,8 @@ import React from "react";
 export default function HomeMeals({ navigation, route }) {
   const cFetch = useFetch();
   const [loading, setLoading] = useState(false);
-  const [mealData, setMealData] = useState(null);
+  const [mealsToday, setMealsToday] = useState(null);
+  const [mealsTomorrow, setMealsTomorrow] = useState(null);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -24,52 +25,42 @@ export default function HomeMeals({ navigation, route }) {
   const fetchMeals = async () => {
     setLoading(true);
     const res = await cFetch
-      .get(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/meals`)
+      .get(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/home/meals`)
       .catch((err) =>
         console.log("Error while fetching data from server: ", err)
       );
 
     console.log(res);
-    setMealData(res.meals);
+    setMealsToday(res.allMealsToday);
+    setMealsTomorrow(res.tomorrowMeals);
     setLoading(false);
   };
 
-  let TodayIndex = new Date().getDay() - 1;
-  if (TodayIndex < 0) TodayIndex = 0;
-  const TomorrowIndex = TodayIndex + 1 > 6 ? 0 : TodayIndex + 1;
   return (
     <View style={styles.outerContainer}>
       <Loader loading={loading}>
         <View style={styles.myMealsContainer}>
           <View>
             <Text style={styles.headerText}>Meals today</Text>
-            {mealData &&
-              mealData[TodayIndex].map(
-                (meal, index) =>
-                  meal && (
-                    <Text
-                      style={styles.singleMeal}
-                      key={`${index}${TodayIndex}`}
-                    >
-                      {MealCategories[index]}
-                    </Text>
-                  )
-              )}
+            {mealsToday?.map(
+              (meal, index) =>
+                meal && (
+                  <Text style={styles.singleMeal} key={index}>
+                    {MealCategories[index]}
+                  </Text>
+                )
+            )}
           </View>
           <View>
             <Text style={styles.headerText}>Meals tomorrow</Text>
-            {mealData &&
-              mealData[TomorrowIndex].map(
-                (meal, index) =>
-                  meal && (
-                    <Text
-                      style={styles.singleMeal}
-                      key={`${index}${TomorrowIndex}`}
-                    >
-                      {MealCategories[index]}
-                    </Text>
-                  )
-              )}
+            {mealsTomorrow?.map(
+              (meal, index) =>
+                meal && (
+                  <Text style={styles.singleMeal} key={index}>
+                    {MealCategories[index]}
+                  </Text>
+                )
+            )}
           </View>
         </View>
       </Loader>
