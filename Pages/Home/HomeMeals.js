@@ -30,7 +30,6 @@ export default function HomeMeals({ navigation, route }) {
         console.log("Error while fetching data from server: ", err)
       );
 
-    console.log(res);
     setMealsToday(res.allMealsToday);
     setMealsTomorrow(res.tomorrowMeals);
     setLoading(false);
