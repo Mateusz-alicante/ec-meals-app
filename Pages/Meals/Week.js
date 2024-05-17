@@ -130,6 +130,7 @@ export default function Week({ user_id }) {
 
   const fetchMeals = async () => {
     setLoading(true);
+    console.log("API at: ", process.env.EXPO_PUBLIC_BACKEND_API);
     const res = await cFetch
       .get(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/meals`, null, {
         forUser: user_id,
