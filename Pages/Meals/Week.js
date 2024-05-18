@@ -8,6 +8,11 @@ import {
   Button,
   ScrollView,
 } from "react-native";
+
+import React from "react";
+
+import { useFocusEffect } from "@react-navigation/native";
+
 import { Table, TableWrapper, Row, Rows } from "react-native-reanimated-table";
 import { useEffect, useState } from "react";
 import Checkbox from "expo-checkbox";
@@ -139,6 +144,8 @@ export default function Week({ user_id }) {
         console.log("Error while fetching data from server: ", err)
       );
 
+    console.log("res: ", res);
+
     setMealData(res.meals);
     setTimer(res.updateTime);
     setUpdateState(true);
@@ -177,10 +184,11 @@ export default function Week({ user_id }) {
     setLoading(false);
   };
 
-  useEffect(() => {
-    console.log("API at: ", process.env.EXPO_PUBLIC_BACKEND_API);
-    fetchMeals();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchMeals();
+    }, [])
+  );
 
   return (
     <ScrollView>

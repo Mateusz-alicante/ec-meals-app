@@ -18,7 +18,6 @@ export default function HomeMeals({ navigation, route }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("API at: ", process.env.EXPO_PUBLIC_BACKEND_API);
       fetchMeals();
     }, [])
   );
