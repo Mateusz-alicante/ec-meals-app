@@ -186,6 +186,7 @@ export default function Week({ user_id }) {
 
   useFocusEffect(
     React.useCallback(() => {
+      console.log("API: ", process.env.EXPO_PUBLIC_BACKEND_API);
       fetchMeals();
     }, [])
   );
