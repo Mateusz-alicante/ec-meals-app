@@ -33,6 +33,7 @@ export default function NotificationPreferences({ navigation, route }) {
 
   const savePreferences = async () => {
     setLoading(true);
+
     const preferences = await cFetch.post(
       `${process.env.EXPO_PUBLIC_BACKEND_API}/api/preferences`,
       {
