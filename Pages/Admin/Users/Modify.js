@@ -30,7 +30,7 @@ import AddSchema from "../../../_helpers/Schemas/AddSchema";
 import { useFetch } from "../../../_helpers/useFetch";
 
 import { useEffect, useState } from "react";
-import { Toast } from "toastify-react-native";
+import platformAlert from "../../../_helpers/useAlert";
 
 export default function ModifyUser({ navigation, route }) {
   const [auth, setAuth] = useAtom(authAtom);
@@ -54,6 +54,7 @@ export default function ModifyUser({ navigation, route }) {
         }
       );
       reset({
+        defaultUsername: false,
         username: res.username,
         firstName: res.firstName,
         lastName: res.lastName,
@@ -82,6 +83,8 @@ export default function ModifyUser({ navigation, route }) {
 
   const email = watch("email", false);
 
+  const defaultUsername = watch("defaultUsername", true);
+
   useEffect(() => {
     console.log(email);
   }, [email]);
@@ -101,7 +104,7 @@ export default function ModifyUser({ navigation, route }) {
           }
         );
       } catch {
-        Toast.error("Error updating user");
+        platformAlert("Error", "Error updating user");
         setLoading(false);
         return;
       }
@@ -112,14 +115,15 @@ export default function ModifyUser({ navigation, route }) {
           data
         );
       } catch {
-        Toast.error("Error adding user");
+        platformAlert("Error", "Error adding user");
         setLoading(false);
         return;
       }
     }
 
     setLoading(false);
-    Toast.success(
+    platformAlert(
+      "Success",
       route.params?.user_id || route.params?.token
         ? "User Updated"
         : "User Added"
@@ -140,7 +144,7 @@ export default function ModifyUser({ navigation, route }) {
       }
     );
     setLoading(false);
-    Toast.success("User Removed");
+    platformAlert("Success", "User Removed");
     navigation.navigate("Users List");
   };
 
@@ -184,13 +188,23 @@ export default function ModifyUser({ navigation, route }) {
       <Container>
         <Loader loading={loading}>
           <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <CustomTextInput
+            <CheckBoxInput
               control={control}
-              name={"username"}
-              placeholder={"username"}
-              label={"username"}
+              name={"defaultUsername"}
+              label={"Default username (firstname_lastname)"}
               errors={errors}
+              defaultValue={true}
             />
+
+            {!defaultUsername && (
+              <CustomTextInput
+                control={control}
+                name={"username"}
+                placeholder={"username"}
+                label={"username"}
+                errors={errors}
+              />
+            )}
 
             <CustomTextInput
               control={control}
@@ -270,6 +284,7 @@ export default function ModifyUser({ navigation, route }) {
                   name={"active"}
                   label={"active"}
                   errors={errors}
+                  defaultValue={true}
                 />
 
                 <CheckBoxInput
@@ -311,6 +326,9 @@ export default function ModifyUser({ navigation, route }) {
 const submitDataCleanup = (data) => {
   if (data.diet == "None") {
     data.diet = undefined;
+  }
+  if (data.defaultUsername) {
+    data.username = `${data.firstName}_${data.lastName}`;
   }
   return data;
 };

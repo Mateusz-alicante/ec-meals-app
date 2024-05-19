@@ -1,6 +1,7 @@
 import Joi from "joi";
 
 export default Joi.object({
+  defaultUsername: Joi.boolean(),
   username: Joi.string().required(),
   password: Joi.string().empty(""),
   firstName: Joi.string().empty(""),
