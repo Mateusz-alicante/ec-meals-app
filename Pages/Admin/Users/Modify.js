@@ -85,10 +85,6 @@ export default function ModifyUser({ navigation, route }) {
 
   const defaultUsername = watch("defaultUsername", true);
 
-  useEffect(() => {
-    console.log(email);
-  }, [email]);
-
   const onSubmit = async (data) => {
     data = submitDataCleanup(data);
     console.log("submit data: ", data);
