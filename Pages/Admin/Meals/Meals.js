@@ -21,7 +21,6 @@ export default function Meals({ navigation, route }) {
   }, [date]);
 
   const fetchMeals = async () => {
-    console.log("fetching for: ", date);
     setLoading(true);
     const res = await cFetch
       .post(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/day`, {

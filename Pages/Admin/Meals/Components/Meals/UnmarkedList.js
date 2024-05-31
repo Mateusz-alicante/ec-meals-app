@@ -8,8 +8,7 @@ import {
 
 import { useState } from "react";
 
-export default UnmarkedList = ({ mealData }) => {
-  if (!mealData) return null;
+export default UnmarkedList = ({ unmarked, noMeals }) => {
   const [open, setOpen] = useState(true);
 
   return (
@@ -17,15 +16,30 @@ export default UnmarkedList = ({ mealData }) => {
       <TouchableOpacity onPress={() => setOpen(!open)}>
         <Text style={styles.mealCatHeader}>Unmarked</Text>
       </TouchableOpacity>
-      {mealData && open && (
-        <View>
-          <View style={styles.mealInfoContainer}>
-            {mealData.map((person, index) => (
-              <Text key={index}>{person.name}</Text>
-            ))}
-          </View>
-        </View>
-      )}
+
+      <View>
+        {unmarked && open && (
+          <>
+            <Text style={styles.mealTypeHeader}>Unmarked</Text>
+            <View style={styles.mealInfoContainer}>
+              {unmarked.map((person, index) => (
+                <Text key={index}>{person.name}</Text>
+              ))}
+            </View>
+          </>
+        )}
+
+        {noMeals && open && (
+          <>
+            <Text style={styles.mealTypeHeader}>No Meals</Text>
+            <View style={styles.mealInfoContainer}>
+              {noMeals.map((person, index) => (
+                <Text key={index}>{person.name}</Text>
+              ))}
+            </View>
+          </>
+        )}
+      </View>
     </>
   );
 };
@@ -47,5 +61,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "#3b78a1",
     backgroundColor: "whitesmoke",
+  },
+  mealTypeHeader: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });

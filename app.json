@@ -3,7 +3,6 @@
     "name": "ec",
     "slug": "ec",
     "version": "1.0.0",
-
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -52,6 +51,14 @@
         }
       ],
       "react-native-background-fetch"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "352dbf17-b2c1-4500-9e25-3273903254fe"
+      }
+    }
   }
 }

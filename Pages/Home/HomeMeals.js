@@ -38,6 +38,8 @@ export default function HomeMeals({ navigation, route }) {
     setMealsToday(res.allMealsToday);
     setMealsTomorrow(res.tomorrowMeals);
     setLoading(false);
+
+    console.log("Meals today: ", typeof res.allMealsToday, res.allMealsToday);
   };
 
   return (
@@ -46,25 +48,27 @@ export default function HomeMeals({ navigation, route }) {
         <View style={styles.myMealsContainer}>
           <View>
             <Text style={styles.headerText}>Meals today</Text>
-            {mealsToday?.map(
-              (meal, index) =>
-                meal && (
-                  <Text style={styles.singleMeal} key={index}>
-                    {MealCategories[index]}
-                  </Text>
-                )
-            )}
+            {Array.isArray(mealsToday) &&
+              mealsToday?.map(
+                (meal, index) =>
+                  meal && (
+                    <Text style={styles.singleMeal} key={index}>
+                      {MealCategories[index]}
+                    </Text>
+                  )
+              )}
           </View>
           <View>
             <Text style={styles.headerText}>Meals tomorrow</Text>
-            {mealsTomorrow?.map(
-              (meal, index) =>
-                meal && (
-                  <Text style={styles.singleMeal} key={index}>
-                    {MealCategories[index]}
-                  </Text>
-                )
-            )}
+            {Array.isArray(mealsTomorrow) &&
+              mealsTomorrow?.map(
+                (meal, index) =>
+                  meal && (
+                    <Text style={styles.singleMeal} key={index}>
+                      {MealCategories[index]}
+                    </Text>
+                  )
+              )}
           </View>
         </View>
       </Loader>

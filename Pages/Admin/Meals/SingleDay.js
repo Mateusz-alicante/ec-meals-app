@@ -41,9 +41,14 @@ export default function SingleDay({ mealData: data, date, fetch }) {
           header={"Packed Meals"}
         />
 
-        {status == "final" && <UnmarkedList mealData={mealData.unmarked} />}
+        {status == "final" && (
+          <UnmarkedList
+            unmarked={mealData.unmarked}
+            noMeals={mealData.noMeals}
+          />
+        )}
 
-        <AddUsers date={date} fetch={fetch} />
+        {status == "final" && <AddUsers date={date} fetch={fetch} />}
       </>
     );
 }
@@ -69,7 +74,6 @@ const Meals = ({ mealData, mealTypeList, header }) => {
 const DayOverview = ({ mealData }) => {
   if (!mealData) return null;
   const [open, setOpen] = useState(false);
-  console.log(mealData);
   if (mealData)
     return (
       <Fragment>
