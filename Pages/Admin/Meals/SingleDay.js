@@ -12,6 +12,7 @@ import SingleMealList from "./Components/Meals/SingleMealList";
 import MealStatusIndicator from "./Components/Status/MealsStatus";
 import UnmarkedList from "./Components/Meals/UnmarkedList";
 import AddUsers from "./Components/Functional/AddUsers";
+import AddGuests from "./Components/Functional/AddGuests";
 
 export default function SingleDay({ mealData: data, date, fetch }) {
   if (!data) return null;
@@ -49,13 +50,15 @@ export default function SingleDay({ mealData: data, date, fetch }) {
         )}
 
         {status == "final" && <AddUsers date={date} fetch={fetch} />}
+
+        <AddGuests date={date} fetch={fetch} />
       </>
     );
 }
 
 const Meals = ({ mealData, mealTypeList, header }) => {
   if (!mealData || !mealTypeList) return null;
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -73,7 +76,7 @@ const Meals = ({ mealData, mealTypeList, header }) => {
 
 const DayOverview = ({ mealData }) => {
   if (!mealData) return null;
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   if (mealData)
     return (
       <Fragment>

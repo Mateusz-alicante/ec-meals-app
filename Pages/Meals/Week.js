@@ -25,6 +25,7 @@ import MealHeader from "./MealHeader";
 import useTimer from "../../_helpers/useTimer";
 
 const screeenWidth = Dimensions.get("window").width;
+
 const screenHeight = Dimensions.get("window").height;
 
 const constructWarningMessage = (time) => {
@@ -47,7 +48,7 @@ const DaysOfTheWeek = [
 
 const MealTypes =
   screeenWidth > 500
-    ? ["Breakdfast", "Lunch", "Supper", "P1", "P2", "PS", "No Meals"]
+    ? ["Breakfast", "Lunch", "Supper", "P1", "P2", "PS", "No Meals"]
     : ["B", "L", "S", "P1", "P2", "PS", "X"];
 
 const DayCheckbox = ({

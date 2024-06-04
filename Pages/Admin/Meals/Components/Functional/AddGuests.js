@@ -21,24 +21,26 @@ export default AddUsers = ({ date, fetch }) => {
   if (!date) return null;
 
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
   const [selectedMeal, setSelectedMeal] = useState(null);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [guestName, setGuestName] = useState("Guest");
+  const [dietName, setdietName] = useState("None");
 
   const cFetch = useFetch();
 
   const submit = async () => {
     if (!selectedMeal) return useAlert("Error", "Please select a meal");
-    if (selectedUsers.length === 0)
-      return useAlert("Error", "Please select at least one user");
+    if (guestName.length === 0)
+      return useAlert("Error", "Please choose guest name");
 
     setLoading(true);
     const res = await cFetch
       .patch(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/day`, {
-        meal: selectedMeal,
-        users: selectedUsers,
+        meal: MEALS.indexOf(selectedMeal),
+        guest: {
+          name: guestName,
+          diet: dietName != "None" && dietName != "" ? dietName : null,
+        },
         date: buildDayString(date),
       })
       .catch((err) => {
@@ -52,16 +54,6 @@ export default AddUsers = ({ date, fetch }) => {
     useAlert("Success", "Users added successfully");
   };
 
-  const fetchUsers = async () => {
-    setLoading(true);
-    const users = await cFetch.get(
-      `${process.env.EXPO_PUBLIC_BACKEND_API}/api/users/all`
-    );
-    if (users) setUsers(users);
-    setLoading(false);
-    console.log(users);
-  };
-
   return (
     <>
       <TouchableOpacity
@@ -71,7 +63,7 @@ export default AddUsers = ({ date, fetch }) => {
           if (newState) fetchUsers();
         }}
       >
-        <Text style={styles.mealCatHeader}>Add users</Text>
+        <Text style={styles.mealCatHeader}>Add Guests</Text>
       </TouchableOpacity>
       {open && (
         <View>
@@ -89,43 +81,20 @@ export default AddUsers = ({ date, fetch }) => {
             </View>
             <View style={styles.formColumn}>
               <View>
+                <Text style={styles.mealCheckBoxLabel}>Guest Name:</Text>
                 <TextInput
-                  placeholder="Search by first name"
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
+                  placeholder="Name of Guest"
+                  value={guestName}
+                  onChangeText={setGuestName}
+                />
+
+                <Text style={styles.mealCheckBoxLabel}>Diet:</Text>
+                <TextInput
+                  placeholder="Diet"
+                  value={dietName}
+                  onChangeText={setdietName}
                 />
               </View>
-              <ScrollView>
-                <Loader loading={loading}>
-                  <View style={styles.userListContainer}>
-                    {users
-                      .filter((user) =>
-                        user.firstName
-                          .toLowerCase()
-                          .includes(searchQuery.toLowerCase())
-                      )
-                      .map((user, index) => (
-                        <View key={user.id} style={styles.singleUserContainer}>
-                          <Checkbox
-                            value={selectedUsers.includes(user.id)}
-                            onValueChange={() => {
-                              if (selectedUsers.includes(user.id)) {
-                                setSelectedUsers(
-                                  selectedUsers.filter((id) => id !== user.id)
-                                );
-                              } else {
-                                setSelectedUsers([...selectedUsers, user.id]);
-                              }
-                            }}
-                          />
-                          <Text style={styles.userCheckboxLabel}>
-                            {user.firstName} {user.lastName}
-                          </Text>
-                        </View>
-                      ))}
-                  </View>
-                </Loader>
-              </ScrollView>
             </View>
           </View>
           <Button title="Submit" onPress={submit} disabled={loading} />
