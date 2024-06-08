@@ -42,12 +42,10 @@ export default function SingleDay({ mealData: data, date, fetch }) {
           header={"Packed Meals"}
         />
 
-        {status == "final" && (
           <UnmarkedList
             unmarked={mealData.unmarked}
             noMeals={mealData.noMeals}
           />
-        )}
 
         {status == "final" && <AddUsers date={date} fetch={fetch} />}
 
