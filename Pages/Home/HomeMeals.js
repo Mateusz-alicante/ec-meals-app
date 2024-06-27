@@ -16,6 +16,7 @@ export default function HomeMeals({ navigation, route }) {
   const [mealsToday, setMealsToday] = useState(null);
   const [mealsTomorrow, setMealsTomorrow] = useState(null);
 
+  
   useFocusEffect(
     React.useCallback(() => {
       console.log(
