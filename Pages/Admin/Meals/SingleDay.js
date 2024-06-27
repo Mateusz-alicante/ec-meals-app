@@ -13,6 +13,7 @@ import MealStatusIndicator from "./Components/Status/MealsStatus";
 import UnmarkedList from "./Components/Meals/UnmarkedList";
 import AddUsers from "./Components/Functional/AddUsers";
 import AddGuests from "./Components/Functional/AddGuests";
+import GenerateReport from "./Components/Functional/GenerateReport";
 
 export default function SingleDay({ mealData: data, date, fetch }) {
   if (!data) return null;
@@ -25,8 +26,9 @@ export default function SingleDay({ mealData: data, date, fetch }) {
   } else
     return (
       <>
-        <View>
+        <View style={styles.topContainer}>
           <MealStatusIndicator mealStatus={status} />
+          <GenerateReport data={data} date={date} />
         </View>
         <DayOverview mealData={mealData} />
 
@@ -123,6 +125,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "stretch",
+  },
+  topContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 
