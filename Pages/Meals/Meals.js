@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, Text } from "react-native";
+import { StyleSheet, View, Dimensions, Text, ScrollView } from "react-native";
 import Container from "../../components/Container/Container";
 import DeepNavLink from "../../components/header/DeepNavLinks/DeepNavLinks";
 import Week from "./Week";
@@ -7,7 +7,7 @@ export default function Meals({ children, style, route, navigation }) {
   user_id = route.params?.user_id;
   returnPaths = route.params?.returnPaths;
   return (
-    <>
+    <ScrollView>
       {returnPaths && (
         <DeepNavLink
           route={route}
@@ -18,6 +18,6 @@ export default function Meals({ children, style, route, navigation }) {
       <Container wide={true} maxHeight={false}>
         <Week user_id={user_id} />
       </Container>
-    </>
+    </ScrollView>
   );
 }

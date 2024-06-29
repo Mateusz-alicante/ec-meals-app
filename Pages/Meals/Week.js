@@ -194,7 +194,7 @@ export default function Week({ user_id }) {
   );
 
   return (
-    <ScrollView>
+    <>
       <Loader
         loading={loading}
         warningIconName={"cloud-upload-outline"}
@@ -224,7 +224,7 @@ export default function Week({ user_id }) {
           </View>
         </View>
       </Loader>
-    </ScrollView>
+    </>
   );
 }
 
