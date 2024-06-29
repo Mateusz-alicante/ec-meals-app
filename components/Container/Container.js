@@ -14,7 +14,7 @@ export default function Container({
       maxHeight: "93%",
 
       width: wide ? "100%" : screeenWidth > 500 ? "50%" : "95%",
-      margin: "auto",
+      margin: "none",
       marginTop: 30,
       backgroundColor: "white",
       borderRadius: 10,

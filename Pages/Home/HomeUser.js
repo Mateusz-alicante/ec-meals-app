@@ -8,15 +8,23 @@ import {
 } from "react-native";
 
 import HomeMeals from "./HomeMeals";
+import HomeCurrentMeal from "./Admin/HomeCurrentMeal";
 
 import Container from "../../components/Container/Container";
 
+import { useAtom } from "jotai";
+import { authAtom } from "../../_helpers/Atoms";
+
 export default function HomeScreen({ navigation, route }) {
+  const [auth, setAuth] = useAtom(authAtom);
   return (
-    <Container>
-      <Text style={styles.headTitle}>Welcome to Ernescliff!</Text>
-      <HomeMeals navigation={navigation} route={route} />
-    </Container>
+    <>
+      {auth.role == "admin" && <HomeCurrentMeal navigation={navigation} route={route} />}
+      <Container>
+        <Text style={styles.headTitle}>Welcome to Ernescliff!</Text>
+        <HomeMeals navigation={navigation} route={route} />
+      </Container>
+    </>
   );
 }
 

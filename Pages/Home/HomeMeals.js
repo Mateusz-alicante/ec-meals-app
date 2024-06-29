@@ -6,6 +6,8 @@ import { useFetch } from "../../_helpers/useFetch";
 const screeenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
+
+
 import { useFocusEffect } from "@react-navigation/native";
 
 import React from "react";
@@ -15,8 +17,9 @@ export default function HomeMeals({ navigation, route }) {
   const [loading, setLoading] = useState(false);
   const [mealsToday, setMealsToday] = useState(null);
   const [mealsTomorrow, setMealsTomorrow] = useState(null);
-
   
+
+
   useFocusEffect(
     React.useCallback(() => {
       console.log(
