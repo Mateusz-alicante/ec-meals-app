@@ -54,7 +54,7 @@ export default function Users({ navigation, route }) {
           }
         />
         <Text>Users:</Text>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.scrollContainer}>
           <Loader loading={loading}>
             <>
               <Text>Search by first name:</Text>
@@ -99,7 +99,7 @@ export default function Users({ navigation, route }) {
                 ))}
             </>
           </Loader>
-        </ScrollView>
+        </View>
       </Container>
     </>
   );

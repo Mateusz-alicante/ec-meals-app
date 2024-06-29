@@ -7,7 +7,7 @@ export default function Meals({ children, style, route, navigation }) {
   user_id = route.params?.user_id;
   returnPaths = route.params?.returnPaths;
   return (
-    <ScrollView>
+    <>
       {returnPaths && (
         <DeepNavLink
           route={route}
@@ -18,6 +18,6 @@ export default function Meals({ children, style, route, navigation }) {
       <Container wide={true} maxHeight={false}>
         <Week user_id={user_id} />
       </Container>
-    </ScrollView>
+    </>
   );
 }

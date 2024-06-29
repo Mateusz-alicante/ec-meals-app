@@ -25,7 +25,7 @@ export default function SingleDay({ mealData: data, date, fetch }) {
     return <Text>{mealData.error}</Text>;
   } else
     return (
-      <>
+      <View style={{marginBottom: 30}}>
         <View style={styles.topContainer}>
           <MealStatusIndicator mealStatus={status} />
           <GenerateReport data={data} date={date} />
@@ -52,7 +52,7 @@ export default function SingleDay({ mealData: data, date, fetch }) {
         {status == "final" && <AddUsers date={date} fetch={fetch} />}
 
         <AddGuests date={date} fetch={fetch} />
-      </>
+      </View>
     );
 }
 
@@ -61,7 +61,7 @@ const Meals = ({ mealData, mealTypeList, header }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <>
+    <View>
       <TouchableOpacity onPress={() => setOpen(!open)}>
         <Text style={styles.mealCatHeader}>{header}</Text>
       </TouchableOpacity>
@@ -70,7 +70,7 @@ const Meals = ({ mealData, mealTypeList, header }) => {
         mealTypeList.map((meal, index) =>
           SingleMealList({ mealData: mealData[index], mealName: meal, index })
         )}
-    </>
+    </View>
   );
 };
 
@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
   },
   overviewOuterContainer: {},
   innerOverviewContainer: {
-    flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "stretch",

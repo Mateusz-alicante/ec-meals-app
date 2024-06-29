@@ -9,5 +9,5 @@ EXPO_PUBLIC_DEV_URL=XXXXXX
 
 ### Deployment
 
-1. Build:: npx expo export -p web
+1. Build:: npx expo export -p web --clear
 2. Publish:: sudo netlify deploy --dir dist --prod

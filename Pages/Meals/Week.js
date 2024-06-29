@@ -111,7 +111,7 @@ const DayCheckbox = ({
         style={
           screeenWidth > 500 ? styles.checkboxDesktop : styles.checkboxMobile
         }
-        disabled={isDisabled}
+        // disabled={isDisabled}
         value={data[indexDay][indexType]}
         onValueChange={toggleValue}
         color={"#3b78a1"}

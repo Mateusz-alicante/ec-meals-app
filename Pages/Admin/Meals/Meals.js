@@ -41,11 +41,7 @@ export default function Meals({ navigation, route }) {
         navigation={navigation}
         routes={["Dashboard"]}
       />
-      <Container style={{ flex: 1 }}>
-        <ScrollView
-          contentContainerStyle={styles.outerContianer}
-          style={{ flex: 1 }}
-        >
+      <Container>
           <View>
             <View style={styles.headerContainer}>
               <Button
@@ -70,7 +66,6 @@ export default function Meals({ navigation, route }) {
               <SingleDay mealData={mealData} date={date} fetch={fetchMeals} />
             </Loader>
           </View>
-        </ScrollView>
       </Container>
     </>
   );

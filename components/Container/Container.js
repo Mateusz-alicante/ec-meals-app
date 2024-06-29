@@ -15,7 +15,8 @@ export default function Container({
 
       width: wide ? "100%" : screeenWidth > 500 ? "50%" : "95%",
       margin: "none",
-      marginTop: 30,
+      marginTop: 20,
+      marginBottom: 5,
       backgroundColor: "white",
       borderRadius: 10,
       padding: 20,
@@ -29,9 +30,10 @@ export default function Container({
       shadowOpacity: 0.8,
       shadowRadius: 2,
       elevation: 5,
+      flex: 1,
       ...style,
     },
   });
 
-  return <View style={[styles.container, style]}>{children}</View>;
+  return <ScrollView><View style={[styles.container, style]}>{children}</View></ScrollView>;
 }

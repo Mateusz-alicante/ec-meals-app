@@ -183,7 +183,7 @@ export default function ModifyUser({ navigation, route }) {
       )}
       <Container>
         <Loader loading={loading}>
-          <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.scrollContainer}>
             <CheckBoxInput
               control={control}
               name={"defaultUsername"}
@@ -304,15 +304,25 @@ export default function ModifyUser({ navigation, route }) {
                 color="#3b78a1"
               />
               {auth.role === "admin" && route.params?.user_id && (
+               <>
                 <Button
                   onPress={confirmRemoveUser}
                   style={styles.button}
                   title={"Remove User"}
                   color="red"
                 />
+                <Button
+                  onPress={() =>
+                    navigation.navigate("Admin Notification Preferences", { returnPaths: ["Dashbaord", "Users List"], forUser: route.params.user_id })
+                  }
+                  style={styles.button}
+                  title={"Set Preferences"}
+                  color="#3b78a1"
+                />
+                </>
               )}
             </View>
-          </ScrollView>
+          </View>
         </Loader>
       </Container>
     </View>
