@@ -75,6 +75,8 @@ const styles = StyleSheet.create({
         flex: 2,
         flexDirection: "row",
         marginTop: 20,
+        flexWrap: "wrap",
+        alignItems: "flex-start",
     },
     singleMealName: {
         fontSize: 19,
