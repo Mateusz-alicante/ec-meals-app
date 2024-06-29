@@ -17,7 +17,7 @@ import Icons from "@expo/vector-icons/Ionicons";
 export default function MealReportGenerator({ data, date }) {
 const generateReport = () => {
     console.log("Generating report");
-    createDoc(data.meals);
+    createDoc(data.meals, date);
     }
 
 useEffect(() => {
@@ -57,46 +57,9 @@ return (
 
 const colWidth = 5000;
 const textFont = "Arial";
-// const marginVal = 6.9;
-const obj = {
-    "_id": { "$oid": "665db74e0c5e66ffd357fc33" },
-    "date": "4/6/2024",
-    "noMeals": [],
-    "unmarked": [],
-    "guests": [{ "meal": { "$numberInt": "2" }, "name": "Guest", "diet": null }],
-    "packedMeals": [
-        [
-            {
-                "name": "Angelo Roldan",
-                "_id": { "$oid": "66586c6fa1594a0df996b2dc" },
-                "diet": "seafood"
-            },
-            {
-                "name": "Carlos Centeno",
-                "_id": { "$oid": "66590ff68a49c5f094b0c6ec" },
-                "diet": null
-            }
-        ],
-        [],
-        [
-            {
-                "name": "Mateusz Kazimierczak",
-                "_id": { "$oid": "6651e932fb16b0ee5df54f48" },
-                "diet": null
-            },
-            {
-                "name": "Jayco Cheng",
-                "_id": { "$oid": "66586d064eb1bd0fe06a18e5" },
-                "diet": null
-            }
-        ]
-    ],
-    "createdAt": { "$date": { "$numberLong": "1717417806539" } },
-    "updatedAt": { "$date": { "$numberLong": "1717421653232" } },
-    "__v": { "$numberInt": "1" }
-}
 
-function createDoc(obj) {
+
+function createDoc(obj, date) {
     // Get the packedMeals array
     const packedMeals = obj['packedMeals'];
 
@@ -152,6 +115,7 @@ function createDoc(obj) {
                             new TextRun({
                                 text: user ? user.name : '',
                                 font: textFont,
+                                bold: true,
                                 size: 25,
                             }),
                         ],
@@ -276,7 +240,7 @@ function createDoc(obj) {
 
     Packer.toBlob(doc).then((blob) => {
         console.log(blob);
-        saveFile(blob, `${getDateString(new Date())}.docx`);
+        saveFile(blob, `${getDateString(date)}.docx`);
         console.log("Document created successfully");
     });
 }
