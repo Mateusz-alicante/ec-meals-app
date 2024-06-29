@@ -60,9 +60,9 @@ export default function HomeCurrentMeal({ navigation, route }) {
 const styles = StyleSheet.create({
     permanentLabel: {
         fontSize: 20,
+        textDecorationLine: "underline",
     },
     mealNameTopContainer: {
-        flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
     },
