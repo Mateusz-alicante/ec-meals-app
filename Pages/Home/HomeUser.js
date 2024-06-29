@@ -5,6 +5,7 @@ import {
   View,
   Header,
   TouchableWithoutFeedback,
+  ScrollView,
 } from "react-native";
 
 import HomeMeals from "./HomeMeals";
@@ -18,13 +19,13 @@ import { authAtom } from "../../_helpers/Atoms";
 export default function HomeScreen({ navigation, route }) {
   const [auth, setAuth] = useAtom(authAtom);
   return (
-    <>
-      {auth.role == "admin" && <HomeCurrentMeal navigation={navigation} route={route} />}
-      <Container>
-        <Text style={styles.headTitle}>Welcome to Ernescliff!</Text>
-        <HomeMeals navigation={navigation} route={route} />
-      </Container>
-    </>
+    <ScrollView>
+    {auth.role == "admin" && <HomeCurrentMeal navigation={navigation} route={route} />}
+    <Container>
+      <Text style={styles.headTitle}>Welcome to Ernescliff!</Text>
+      <HomeMeals navigation={navigation} route={route} />
+    </Container>
+  </ScrollView>
   );
 }
 
@@ -40,4 +41,7 @@ const styles = StyleSheet.create({
     margin: 30,
     fontWeight: "400",
   },
+  outerContainer: {
+    flex: 1,
+  }
 });
