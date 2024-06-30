@@ -43,7 +43,7 @@ export default useTimer = ({ nextCall }) => {
       setTime(untilWarning);
     } else {
       // If warning has triggered, set time needed for next call
-      setWarning(true);
+      setWarning(false); // -- change
       setTime(
         untilWarning +
           process.env.EXPO_PUBLIC_AFTER_WAIT_FOR_NEXT_CYCLE * 60 * 1000
