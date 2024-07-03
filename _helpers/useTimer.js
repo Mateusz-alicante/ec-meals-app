@@ -35,7 +35,7 @@ export default useTimer = ({ nextCall }) => {
     const untilWarning =
       time -
       Date.now() -
-      process.env.EXPO_PUBLIC_BEFORE_WAIT_FOR_NEXT_CYCLE * 60 * 1000;
+      process.env.EXPO_PUBLIC_BEFORE_WAIT_FOR_NEXT_CYCLE * 1000;
 
     if (untilWarning > 0) {
       // If warning is not needed, set time normally
@@ -46,7 +46,7 @@ export default useTimer = ({ nextCall }) => {
       setWarning(false); // -- change
       setTime(
         untilWarning +
-          process.env.EXPO_PUBLIC_AFTER_WAIT_FOR_NEXT_CYCLE * 60 * 1000
+          process.env.EXPO_PUBLIC_AFTER_WAIT_FOR_NEXT_CYCLE * 1000
       );
     }
   };

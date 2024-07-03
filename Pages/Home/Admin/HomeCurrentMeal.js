@@ -1,3 +1,7 @@
+'use client';
+
+export const dynamic = 'force-dynamic';
+
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -12,6 +16,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import Container from "../../../components/Container/Container";
 import Loader from "../../../components/Loader/Loader";
 import { useFetch } from "../../../_helpers/useFetch";
+
+export const revalidate = 60 * 5;
 
 export default function HomeCurrentMeal({ navigation, route }) {
     const cFetch = useFetch();

@@ -18,7 +18,7 @@ function useFetch() {
   };
 
   function request(method) {
-    return (url, body, headers = {}) => {
+    return (url, body, headers = {}, forceDynamic = false) => {
       const requestOptions = {
         method,
         headers,
@@ -27,6 +27,9 @@ function useFetch() {
       if (user?.token) {
         requestOptions.headers["Authorization"] = user.token;
       }
+
+      if (forceDynamic) 
+        requestOptions["cache"] = "no-store";
 
       if (body) {
         requestOptions.headers["Content-Type"] = "application/json";
