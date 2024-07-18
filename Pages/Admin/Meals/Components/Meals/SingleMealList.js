@@ -20,8 +20,10 @@ export default function SingleMealList({ mealName, mealData, index }) {
 }
 
 export function DetailedMealList({ mealName, mealData, index, allUsers }) {
+  console.log("mealData: ", mealData);
+  console.log("allUsers: ", allUsers);
   const notSignedUp = allUsers.filter((user) => {
-    return !mealData.some((meal) => meal.id == user.id);
+    return !mealData.some((meal) => meal._id == user.id);
   });
 
   return (
