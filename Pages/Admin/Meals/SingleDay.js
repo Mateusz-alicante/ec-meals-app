@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import OverviewCategoryDisplay from "./Components/Overview/OverviewCategoryDisplay";
-import SingleMealList from "./Components/Meals/SingleMealList";
+import SingleMealList, {DetailedMealList} from "./Components/Meals/SingleMealList";
 import MealStatusIndicator from "./Components/Status/MealsStatus";
 import UnmarkedList from "./Components/Meals/UnmarkedList";
 import AddUsers from "./Components/Functional/AddUsers";
@@ -20,6 +20,7 @@ export default function SingleDay({ mealData: data, date, fetch }) {
 
   const mealData = data.meals;
   const status = data.status;
+  const allUsers = data.allUsers;
 
   if (mealData.error) {
     return <Text>{mealData.error}</Text>;
@@ -36,6 +37,8 @@ export default function SingleDay({ mealData: data, date, fetch }) {
           mealData={mealData.meals}
           mealTypeList={MEALS}
           header={"Meals"}
+          detailed={true}
+          allUsers={allUsers}
         />
 
         <Meals
@@ -56,7 +59,7 @@ export default function SingleDay({ mealData: data, date, fetch }) {
     );
 }
 
-const Meals = ({ mealData, mealTypeList, header }) => {
+const Meals = ({ mealData, mealTypeList, header, detailed=false, allUsers=null }) => {
   if (!mealData || !mealTypeList) return null;
   const [open, setOpen] = useState(false);
 
@@ -68,7 +71,20 @@ const Meals = ({ mealData, mealTypeList, header }) => {
       {mealData &&
         open &&
         mealTypeList.map((meal, index) =>
-          SingleMealList({ mealData: mealData[index], mealName: meal, index })
+          {if (detailed) {
+            return DetailedMealList({
+              mealData: mealData[index],
+              allUsers: allUsers,
+              mealName: meal,
+              index: index,
+            });
+          } else {
+            return SingleMealList({
+              mealData: mealData[index],
+              mealName: meal,
+              index: index,
+            });
+          }}
         )}
     </View>
   );

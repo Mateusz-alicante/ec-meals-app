@@ -1,5 +1,7 @@
 import "react-native-gesture-handler";
 
+import React, { Suspense } from 'react';
+
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, KeyboardAvoidingView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -25,10 +27,19 @@ import Icons from "@expo/vector-icons/Ionicons";
 import ToastManager from "toastify-react-native";
 
 export default function App() {
-  const [auth, setAuth] = useAtom(authAtom);
+  
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+    <Suspense fallback={<Text>Loading...</Text>} >
+      <AppEntry />
+    </Suspense>
+  );
+}
+
+function AppEntry () {
+  const [auth, setAuth] = useAtom(authAtom);
+  return (
+<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <View style={styles.container}>
         <ToastManager />
         <NavigationContainer>
@@ -61,7 +72,7 @@ export default function App() {
         </NavigationContainer>
       </View>
     </KeyboardAvoidingView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({

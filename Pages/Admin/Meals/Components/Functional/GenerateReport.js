@@ -8,7 +8,6 @@ import {
     Button,
 } from "react-native";
 
-import * as fs from "fs";
 import { Document, Paragraph, TextRun, Packer, convertInchesToTwip, AlignmentType, BorderStyle, Table, TableRow, TableCell, WidthType } from 'docx';
 
 import { useEffect } from "react";
