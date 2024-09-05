@@ -4,24 +4,27 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  Alert,
+  Platform
 } from "react-native";
+import useAlert from "../../../../../_helpers/useAlert";
+import { isMobile } from 'react-device-detect';
 
-export default function SingleMealList({ mealName, mealData, index }) {
+
+export default function SingleMealList({ mealName, mealData, index, removeUserFromMeal }) {
   return (
     <View key={index} style={styles.mealInfoContainer}>
       <Text style={styles.mealTypeHeader}>{mealName}</Text>
       <View style={styles.personListContainer}>
-        {mealData.map(({ name, id, diet }) => {
-          return singleUserMealElement(name, id, diet)
+        {mealData.map(({ name, _id, diet }) => {
+          return singleUserMealElement(name, _id, diet, removeUserFromMeal)
         })}
       </View>
     </View>
   );
 }
 
-export function DetailedMealList({ mealName, mealData, index, allUsers }) {
-  console.log("mealData: ", mealData);
-  console.log("allUsers: ", allUsers);
+export function DetailedMealList({ mealName, mealData, index, allUsers, removeUserFromMeal }) {
   const notSignedUp = allUsers.filter((user) => {
     return !mealData.some((meal) => meal._id == user.id);
   });
@@ -32,8 +35,8 @@ export function DetailedMealList({ mealName, mealData, index, allUsers }) {
       <View style={styles.personListDetailedContainer}>
         <View>
           <Text style={styles.signedUpLabel}>Signed Up</Text>
-          {mealData.map(({ name, id, diet }) => {
-            return singleUserMealElement(name, id, diet)
+          {mealData.map(({ name, _id, diet }) => {
+            return singleUserMealElement(name, _id, diet, removeUserFromMeal)
           })}
         </View>
 
@@ -42,7 +45,7 @@ export function DetailedMealList({ mealName, mealData, index, allUsers }) {
           <Text style={styles.notSignedUpLabel}>Not Signed Up</Text>
           {notSignedUp.map(({ firstName, lastName, id }) => {
             const name = `${firstName} ${lastName}`;
-            return singleUserMealElement(name, id)
+            return singleUserMealElement(name, id, null, null)
           })}
         </View>
       </View>
@@ -50,11 +53,51 @@ export function DetailedMealList({ mealName, mealData, index, allUsers }) {
   );
 }
 
-const singleUserMealElement = (name, id, diet) => {
+
+
+const removeUserFromMealWrapper = async (removeUser, userName, userID) => {
+  console.log("removeUserFromMealWrapper: ", userName, userID);
+  // if on mobiel show alert
+  if (Platform.OS ==="web") {
+    if (confirm(`Are you sure you want to remove ${userName} from the meal?`)) {
+      await removeUser(userID);
+      useAlert("Success", "User removed from meal");
+    } 
+  } else 
+  Alert.alert(
+    "Remove User",
+    `Are you sure you want to remove ${userName} from the meal?`,
+    [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "Remove",
+        onPress: async () => {
+          await removeUser(userID);
+          useAlert("Success", "User removed from meal");
+        },
+      },
+    ]
+  );
+
+  
+}
+
+const singleUserMealElement = (name, id, diet, removeUserFromMeal) => {
   return (
-    <Text key={id} style={styles.singlePersonListTextElement}>
+    <TouchableOpacity key={id} onPress={() => {
+      if (removeUserFromMeal && !isMobile) {
+        console.log("id: ", id);
+        removeUserFromMealWrapper(removeUserFromMeal, name, id); 
+      }
+    }}>
+      <Text  style={styles.singlePersonListTextElement}>
       {name}{diet && "\n   "}{diet && `(${diet})`}
     </Text>
+    </TouchableOpacity>
   );
 }
 

@@ -20,6 +20,7 @@ export default function CTextInput({
           <TextInput
             value={value}
             onChangeText={onChange}
+            onBlur={() => onChange(value.trim())}
             placeholder={placeholder}
             style={styles.input}
             keyboardType={keyboardType}

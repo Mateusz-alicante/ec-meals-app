@@ -15,7 +15,7 @@ import AddUsers from "./Components/Functional/AddUsers";
 import AddGuests from "./Components/Functional/AddGuests";
 import GenerateReport from "./Components/Functional/GenerateReport";
 
-export default function SingleDay({ mealData: data, date, fetch }) {
+export default function SingleDay({ mealData: data, date, fetch, removeUserFromMeal }) {
   if (!data) return null;
 
   const mealData = data.meals;
@@ -39,6 +39,7 @@ export default function SingleDay({ mealData: data, date, fetch }) {
           header={"Meals"}
           detailed={true}
           allUsers={allUsers}
+          removeUserFromMeal={removeUserFromMeal}
         />
 
         <Meals
@@ -52,14 +53,14 @@ export default function SingleDay({ mealData: data, date, fetch }) {
             noMeals={mealData.noMeals}
           />
 
-        {status == "final" && <AddUsers date={date} fetch={fetch} />}
+        <AddUsers date={date} fetch={fetch} />
 
         <AddGuests date={date} fetch={fetch} />
       </View>
     );
 }
 
-const Meals = ({ mealData, mealTypeList, header, detailed=false, allUsers=null }) => {
+const Meals = ({ mealData, mealTypeList, header, detailed=false, allUsers=null, removeUserFromMeal=null }) => {
   if (!mealData || !mealTypeList) return null;
   const [open, setOpen] = useState(false);
 
@@ -77,12 +78,14 @@ const Meals = ({ mealData, mealTypeList, header, detailed=false, allUsers=null }
               allUsers: allUsers,
               mealName: meal,
               index: index,
+              removeUserFromMeal: removeUserFromMeal ? (user_id) => removeUserFromMeal(index, user_id) : null,
             });
           } else {
             return SingleMealList({
               mealData: mealData[index],
               mealName: meal,
               index: index,
+              // removeUserFromMeal: (user_id) => removeUserFromMeal(index, user_id),
             });
           }}
         )}

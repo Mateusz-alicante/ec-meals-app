@@ -5,6 +5,7 @@ import { useFetch } from "../../../_helpers/useFetch";
 import DeepNavLink from "../../../components/header/DeepNavLinks/DeepNavLinks";
 import Loader from "../../../components/Loader/Loader";
 import SingleDay from "./SingleDay";
+import useAlert from "../../../_helpers/useAlert";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function Meals({ navigation, route }) {
@@ -29,10 +30,22 @@ export default function Meals({ navigation, route }) {
       .catch((err) =>
         console.log("Error while fetching data from server: ", err)
       );
-    console.log("res: ", res);
     setMealData(res);
     setLoading(false);
   };
+
+  const removeUserFromMeal = async (mealId, userId) => {
+    const res = await cFetch
+        .post(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/day/removeUser`, {
+          date: buildDayString(date),
+          mealID: mealId,
+          userID: userId,
+        })
+        .catch((err) =>
+          console.log("Error while fetching data from server: ", err)
+        );
+      await fetchMeals();
+  }
 
   return (
     <>
@@ -63,7 +76,7 @@ export default function Meals({ navigation, route }) {
               />
             </View>
             <Loader loading={loading}>
-              <SingleDay mealData={mealData} date={date} fetch={fetchMeals} />
+              <SingleDay mealData={mealData} date={date} fetch={fetchMeals} removeUserFromMeal={removeUserFromMeal} />
             </Loader>
           </View>
       </Container>
