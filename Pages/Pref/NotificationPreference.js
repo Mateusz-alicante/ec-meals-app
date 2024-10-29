@@ -16,7 +16,10 @@ export default function NotificationPreferences({ navigation, route }) {
   const cFetch = useFetch();
   const [loading, setLoading] = useState(false);
   const [emailPref, setEmailPref] = useState(1);
+  const [persistMeals, setPersistMeals] = useState(false);
+  const [allowNextWeek, setAllowNextWeek] = useState(false);
   const [name, setName] = useState("");
+  const [auth, setAuth] = useAtom(authAtom);
 
   useEffect(() => {
     loadPreferences();
@@ -33,6 +36,8 @@ export default function NotificationPreferences({ navigation, route }) {
     );
     console.log("Preferences: ", res, route.params.forUser);
     setEmailPref(res.preferences.email);
+    setPersistMeals(res.preferences.persistMeals);
+    setAllowNextWeek(res.preferences.allowNextWeek);
     setName(res.firstName);
     setLoading(false);
   };
@@ -44,6 +49,8 @@ export default function NotificationPreferences({ navigation, route }) {
       `${process.env.EXPO_PUBLIC_BACKEND_API}/api/preferences`,
       {
         email: emailPref,
+        persistMeals: persistMeals,
+        allowNextWeek: allowNextWeek,
       },
       {
         user_id: route.params.forUser,
@@ -52,6 +59,8 @@ export default function NotificationPreferences({ navigation, route }) {
     setLoading(false);
     navigation.navigate(route.params.returnPaths[route.params.returnPaths.length - 1]);
     Toast.success("Preferences saved");
+
+    //setAuth((oldP) => ({ ...oldP, allowNextWeek: allowNextWeek }));
   };
 
   return (
@@ -93,6 +102,35 @@ export default function NotificationPreferences({ navigation, route }) {
             />
             <Text style={styles.singleOptionTextLabel}>Daily meal report:</Text>
           </View>
+
+          <Text style={styles.optionGroupLabel}>Usage Preferences:</Text>
+            <View style={styles.singleOptionContainer}>
+                        
+                <Checkbox
+                  style={styles.checkbox}
+                  onValueChange={() => setAllowNextWeek(!allowNextWeek)}
+                  value={allowNextWeek}
+                />
+                <Text style={styles.singleOptionTextLabel}>Allow mark next week:</Text>
+              </View>
+
+          {route.params.forUser && !loading && (
+            <>
+            <Text style={styles.optionGroupLabel}>Admin Preferences:</Text>
+            <View style={styles.singleOptionContainer}>
+                        
+                <Checkbox
+                  style={styles.checkbox}
+                  onValueChange={() => setPersistMeals(!persistMeals)}
+                  value={persistMeals}
+                />
+                <Text style={styles.singleOptionTextLabel}>Persist Meals:</Text>
+              </View>
+            </>
+            
+
+            
+          )}
           <View>
             <Button title="Save" onPress={savePreferences} />
           </View>

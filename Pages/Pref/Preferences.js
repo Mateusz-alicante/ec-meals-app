@@ -34,7 +34,7 @@ export default function Preferences({ navigation, route }) {
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            title="Notification Preferences"
+            title="Preferences"
             onPress={() =>
               navigation.navigate("Notification Preferences", {
                 returnPaths: ["Preferences Dashboard"],

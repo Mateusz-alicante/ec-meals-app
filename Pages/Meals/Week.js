@@ -25,6 +25,9 @@ import { useFetch } from "../../_helpers/useFetch";
 import MealHeader from "./MealHeader";
 import useTimer from "../../_helpers/useTimer";
 
+import { useAtom } from "jotai";
+import { authAtom } from "../../_helpers/Atoms";
+
 const screeenWidth = Dimensions.get("window").width;
 
 const screenHeight = Dimensions.get("window").height;
@@ -67,8 +70,10 @@ const DayCheckbox = ({
   if (indexType >= 3 && !isDisabled) {
     isDisabled = indexDay == (disabledDay + 1) % 7;
   }
-
+  
+  const [auth, setAuth] = useAtom(authAtom);
   const toggleValue = () => {
+    console.log("Auth: ", auth);
     setUpdateState(false);
     setData((prev) => {
       const newData = [...prev];
@@ -111,7 +116,7 @@ const DayCheckbox = ({
         style={
           screeenWidth > 500 ? styles.checkboxDesktop : styles.checkboxMobile
         }
-        // disabled={isDisabled}
+        disabled={isDisabled && !auth?.preferences?.allowNextWeek}
         value={data[indexDay][indexType]}
         onValueChange={toggleValue}
         color={"#3b78a1"}
@@ -145,8 +150,7 @@ export default function Week({ user_id }) {
       .catch((err) =>
         console.log("Error while fetching data from server: ", err)
       );
-
-    console.log("res: ", res);
+      
 
     setMealData(res.meals);
     setTimer(res.updateTime);

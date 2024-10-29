@@ -35,6 +35,7 @@ export default function Login({ navigation }) {
 
   const onSubmit = async (data) => {
     setLoading(true);
+    console.log("Api at: ", process.env.EXPO_PUBLIC_BACKEND_API)
     const res = await cFetch
       .post(`${process.env.EXPO_PUBLIC_BACKEND_API}/api/auth`, data)
       .catch((err) => {
